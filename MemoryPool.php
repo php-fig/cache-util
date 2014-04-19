@@ -33,18 +33,6 @@ class MemoryPool implements PoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function getItems(array $keys = array())
-    {
-        $collection = new MemoryCollection();
-        foreach ($keys as $key) {
-            $collection[$key] = $this->getItem($key);
-        }
-        return $collection;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function clear()
     {
         $this->data = [];

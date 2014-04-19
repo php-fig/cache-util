@@ -12,9 +12,9 @@ date_default_timezone_set('America/Chicago');
 $pool = new MemoryPool();
 
 $item = $pool->getItem('foo');
-$item->save('foo value', '300');
+$item->set('foo value', '300')->save();
 $item = $pool->getItem('bar');
-$item->save('bar value', '300');
+$item->set('bar value', '300')->save();
 
 
 /*

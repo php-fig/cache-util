@@ -48,7 +48,7 @@ trait BasicCacheItemTrait {
     /**
      * {@inheritdoc}
      */
-    public function set($value, $ttl = null)
+    public function set($value = NULL, $ttl = null)
     {
         $this->value = $value;
         $this->setExpiration($ttl);
@@ -58,11 +58,8 @@ trait BasicCacheItemTrait {
     /**
      * {@inheritdoc}
      */
-    public function save($value = null, $ttl = null)
+    public function save()
     {
-        if ($value) {
-            $this->set($value, $ttl);
-        }
         return $this->write($this->key, $this->value, $this->ttd);
     }
 
