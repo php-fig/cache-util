@@ -5,7 +5,7 @@ namespace Psr\Cache;
 /**
  * In-memory implementation of a cache item.
  */
-class MemoryCacheItem implements ItemInterface {
+class MemoryCacheItem implements CacheItemInterface {
     use BasicCacheItemTrait;
 
     /**

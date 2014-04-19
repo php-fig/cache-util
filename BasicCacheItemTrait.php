@@ -5,7 +5,7 @@ namespace Psr\Cache;
 /**
  * Basic implementation of a backend-agnostic cache item.
  *
- * @implements \Psr\Cache\ItemInterface
+ * @implements \Psr\Cache\CacheItemInterface
  */
 trait BasicCacheItemTrait {
 

@@ -5,7 +5,7 @@ namespace Psr\Cache;
 /**
  * An in-memory implementation of the Pool interface.
  */
-class MemoryPool implements PoolInterface {
+class MemoryPool implements CacheItemPoolInterface {
 
     /**
      * The stored data in this cache pool.
