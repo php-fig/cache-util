@@ -1,0 +1,25 @@
+{
+    "name": "psr/cache-util",
+    "description": "Useful utility classes and traits for implementing the PSR cache standard",
+    "keywords": ["psr", "psr-6", "cache"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "PHP-FIG",
+            "homepage": "http://www.php-fig.org/"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Psr\\Cache\\": "."
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
