@@ -17,7 +17,7 @@ class MemoryCacheItem implements CacheItemInterface {
         $this->pool = $pool;
         $this->key = $key;
         $this->value = $data['value'];
-        $this->ttd = $data['ttd'];
+        $this->expiration = $data['ttd'];
         $this->hit = $data['hit'];
     }
 

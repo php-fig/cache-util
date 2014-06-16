@@ -83,7 +83,7 @@ trait BasicCacheItemTrait {
      * {@inheritdoc}
      */
     public function getExpiration() {
-        return $this->ttd;
+        return $this->expiration;
     }
 
     /**
@@ -91,13 +91,13 @@ trait BasicCacheItemTrait {
      */
     protected function setExpiration($ttl = null) {
         if ($ttl instanceof \DateTime) {
-            $this->ttd = $ttl;
+            $this->expiration = $ttl;
         }
-        elseif (is_int($ttl)) {
-            $this->ttd = new \DateTime('now +' . $ttl . ' seconds');
+        elseif (is_numeric($ttl)) {
+            $this->expiration = new \DateTime('now +' . $ttl . ' seconds');
         }
-        elseif (is_null($this->ttd)) {
-            $this->ttd = new \DateTime('now +1 year');
+        elseif (is_null($ttl)) {
+            $this->expiration = new \DateTime('now +1 year');
         }
         return $this;
     }
