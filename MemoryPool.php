@@ -71,14 +71,11 @@ class MemoryPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
-    public function save(CacheItemInterface $item, $defer = false)
+    public function save(CacheItemInterface $item, $defer = CacheItemPoolInterface::IMMEDIATE)
     {
-        if ($defer) {
-            $this->deferred[] = $item;
-        }
-        else {
-            $this->write([$item]);
-        }
+        $defer
+          ? $this->deferred[] = $item
+          :$this->write([$item]);
 
         return $this;
     }

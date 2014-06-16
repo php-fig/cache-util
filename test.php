@@ -11,6 +11,7 @@ date_default_timezone_set('America/Chicago');
 
 $pool = new MemoryPool();
 
+// Basic set/get operations.
 $item = $pool->getItem('foo');
 $item->set('foo value', '300');
 $pool->save($item);
@@ -27,6 +28,7 @@ foreach ($pool->getItems(['foo', 'bar']) as $item) {
     }
 }
 
+// Update an existing item.
 $items = $pool->getItems(['foo', 'bar']);
 $items['bar']->set('new bar value');
 array_map([$pool, 'save'], $items);
@@ -40,26 +42,21 @@ foreach ($pool->getItems(['foo', 'bar']) as $item) {
     }
 }
 
-
-
-/*
-$items = $pool->getItems(['foo', 'bar']);
-
-$items['bar']->set('new bar value');
-$items->save();
-
-foreach ($pool->getItems(['foo', 'bar']) as $item) {
-    printf("%s: %s\n", $item->getKey(), $item->get());
-}
-*/
-
-/*
-$item = $pool->getItem('baz')->set('baz value');
-$collection = $pool->getItems(['foo', 'bar']);
-$collection[] = $item;
-$collection->save();
+// Defer saving to a later operation.
+$item = $pool->getItem('baz')->set('baz value', '100');
+$pool->save($item, CacheItemPoolInterface::DEFER);
+$item = $pool->getItem('foo')->set('new foo value', new \DateTime('now + 1min'));
+$pool->save($item, CacheItemPoolInterface::DEFER);
+$pool->commit();
 
 foreach ($pool->getItems(['foo', 'bar', 'baz']) as $item) {
-    printf("%s: %s\n", $item->getKey(), $item->get());
+    if ($item->getKey() == 'foo') {
+        assert($item->get() == 'new foo value');
+    }
+    if ($item->getKey() == 'bar') {
+        assert($item->get() == 'new bar value');
+    }
+    if ($item->getKey() == 'baz') {
+        assert($item->get() == 'baz value');
+    }
 }
-*/
