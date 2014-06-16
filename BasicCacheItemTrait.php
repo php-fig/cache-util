@@ -87,12 +87,9 @@ trait BasicCacheItemTrait {
     }
 
     /**
-     * Sets the expiration for this cache item.
-     *
-     * @param mixed $ttl
-     *   The TTL to convert to a DateTime expiration.
+     * {@inheritdoc}
      */
-    protected function setExpiration($ttl) {
+    protected function setExpiration($ttl = null) {
         if ($ttl instanceof \DateTime) {
             $this->ttd = $ttl;
         }
@@ -102,5 +99,6 @@ trait BasicCacheItemTrait {
         elseif (is_null($this->ttd)) {
             $this->ttd = new \DateTime('now +1 year');
         }
+        return $this;
     }
 }
