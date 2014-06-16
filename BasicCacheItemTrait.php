@@ -58,14 +58,6 @@ trait BasicCacheItemTrait {
     /**
      * {@inheritdoc}
      */
-    public function save()
-    {
-        return $this->write($this->key, $this->value, $this->ttd);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isHit()
     {
         return $this->hit;
@@ -88,6 +80,13 @@ trait BasicCacheItemTrait {
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getExpiration() {
+        return $this->ttd;
+    }
+
+    /**
      * Sets the expiration for this cache item.
      *
      * @param mixed $ttl
@@ -104,19 +103,4 @@ trait BasicCacheItemTrait {
             $this->ttd = new \DateTime('now +1 year');
         }
     }
-
-    /**
-     * Commits this cache item to storage.
-     *
-     * @param $key
-     *   The key of the cache item to save.
-     * @param $value
-     *   The value to save. It should not be serialized.
-     * @param \DateTime $expiration
-     *   The timestamp after which this cache item should be considered expired.
-     * @return boolean
-     *   Returns true if the item was successfully committed, or false if there was
-     *   an error.
-     */
-    protected abstract function write($key, $value, \DateTime $expiration);
 }

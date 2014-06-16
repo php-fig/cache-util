@@ -12,7 +12,14 @@ class MemoryPool implements CacheItemPoolInterface {
      *
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
+
+    /**
+     * Deferred cache items to be saved later.
+     *
+     * @var CacheItemInterface[]
+     */
+    protected $deferred = [];
 
     /**
      * {@inheritdoc}
@@ -28,6 +35,18 @@ class MemoryPool implements CacheItemPoolInterface {
         }
 
         return new MemoryCacheItem($this, $key, $this->data[$key]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItems(array $keys = array())
+    {
+        $collection = [];
+        foreach ($keys as $key) {
+            $collection[$key] = $this->getItem($key);
+        }
+        return $collection;
     }
 
     /**
@@ -50,17 +69,48 @@ class MemoryPool implements CacheItemPoolInterface {
     }
 
     /**
-     * @param $key
-     * @param mixed $value
-     *   The
-     * @param \DateTime $expiration
-     *   The time after which the saved item should be considered expired.
+     * {@inheritdoc}
      */
-    public function write($key, $value, \DateTime $expiration) {
-        $this->data[$key] = [
-            'value' => $value,
-            'ttd' => $expiration,
-            'hit' => TRUE,
-        ];
+    public function save(CacheItemInterface $item, $defer = false)
+    {
+        if ($defer) {
+            $this->deferred[] = $item;
+        }
+        else {
+            $this->write([$item]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function commit()
+    {
+        $success = $this->write($this->deferred);
+        if ($success) {
+            $this->deferred = [];
+        }
+        return $success;
+    }
+
+    /**
+     * Commits the specified cache items to storage.
+     *
+     * @param CacheItemInterface[] $items
+     */
+    protected function write(array $items)
+    {
+        /** @var \Psr\Cache\CacheItemInterface $item  */
+        foreach ($items as $item) {
+            $this->data[$item->getKey()] = [
+              'value' => $item->getRawValue(),
+              'ttd' => $item->getExpiration(),
+              'hit' => TRUE,
+            ];
+        }
+
+        return true;
     }
 }

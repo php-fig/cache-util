@@ -12,16 +12,37 @@ date_default_timezone_set('America/Chicago');
 $pool = new MemoryPool();
 
 $item = $pool->getItem('foo');
-$item->set('foo value', '300')->save();
+$item->set('foo value', '300');
+$pool->save($item);
 $item = $pool->getItem('bar');
-$item->set('bar value', '300')->save();
+$item->set('bar value', new \DateTime('now + 5min'));
+$pool->save($item);
+
+foreach ($pool->getItems(['foo', 'bar']) as $item) {
+    if ($item->getKey() == 'foo') {
+        assert($item->get() == 'foo value');
+    }
+    if ($item->getKey() == 'bar') {
+        assert($item->get() == 'bar value');
+    }
+}
+
+$items = $pool->getItems(['foo', 'bar']);
+$items['bar']->set('new bar value');
+array_map([$pool, 'save'], $items);
+
+foreach ($pool->getItems(['foo', 'bar']) as $item) {
+    if ($item->getKey() == 'foo') {
+        assert($item->get() == 'foo value');
+    }
+    if ($item->getKey() == 'bar') {
+        assert($item->get() == 'new bar value');
+    }
+}
+
 
 
 /*
-foreach ($pool->getItems(['foo', 'bar']) as $item) {
-    printf("%s: %s\n", $item->getKey(), $item->get());
-}
-
 $items = $pool->getItems(['foo', 'bar']);
 
 $items['bar']->set('new bar value');
