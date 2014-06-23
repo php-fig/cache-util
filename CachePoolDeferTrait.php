@@ -18,12 +18,18 @@ trait CachePoolDeferTrait {
     /**
      * {@inheritdoc}
      */
-    public function save(CacheItemInterface $item, $defer = CacheItemPoolInterface::IMMEDIATE)
+    public function save(CacheItemInterface $item)
     {
-        $defer
-          ? $this->deferred[] = $item
-          :$this->write([$item]);
+        $this->write([$item]);
+        return $this;
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function saveDeferred(CacheItemInterface $item)
+    {
+        $this->deferred[] = $item;
         return $this;
     }
 
@@ -43,6 +49,9 @@ trait CachePoolDeferTrait {
      * Commits the specified cache items to storage.
      *
      * @param CacheItemInterface[] $items
+     *
+     * @return bool
+     *   TRUE if all provided items were successfully saved. FALSE otherwise.
      */
     abstract protected function write(array $items);
 }

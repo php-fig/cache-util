@@ -44,9 +44,9 @@ foreach ($pool->getItems(['foo', 'bar']) as $item) {
 
 // Defer saving to a later operation.
 $item = $pool->getItem('baz')->set('baz value', '100');
-$pool->save($item, CacheItemPoolInterface::DEFER);
+$pool->saveDeferred($item);
 $item = $pool->getItem('foo')->set('new foo value', new \DateTime('now + 1min'));
-$pool->save($item, CacheItemPoolInterface::DEFER);
+$pool->saveDeferred($item);
 $pool->commit();
 
 foreach ($pool->getItems(['foo', 'bar', 'baz']) as $item) {
