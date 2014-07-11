@@ -19,11 +19,11 @@ $item = $pool->getItem('bar');
 $item->set('bar value', new \DateTime('now + 5min'));
 $pool->save($item);
 
-foreach ($pool->getItems(['foo', 'bar']) as $item) {
-    if ($item->getKey() == 'foo') {
+foreach ($pool->getItems(['foo', 'bar']) as $key => $item) {
+    if ($key == 'foo') {
         assert($item->get() == 'foo value');
     }
-    if ($item->getKey() == 'bar') {
+    if ($key == 'bar') {
         assert($item->get() == 'bar value');
     }
 }
