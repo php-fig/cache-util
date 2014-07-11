@@ -49,14 +49,7 @@ $item = $pool->getItem('foo')->set('new foo value', new \DateTime('now + 1min'))
 $pool->saveDeferred($item);
 $pool->commit();
 
-foreach ($pool->getItems(['foo', 'bar', 'baz']) as $item) {
-    if ($item->getKey() == 'foo') {
-        assert($item->get() == 'new foo value');
-    }
-    if ($item->getKey() == 'bar') {
-        assert($item->get() == 'new bar value');
-    }
-    if ($item->getKey() == 'baz') {
-        assert($item->get() == 'baz value');
-    }
-}
+$items = $pool->getItems(['foo', 'bar', 'baz']);
+assert($items['foo']->get() == 'new foo value');
+assert($items['bar']->get() == 'new bar value');
+assert($items['baz']->get() == 'baz value');
