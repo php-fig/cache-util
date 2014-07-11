@@ -17,15 +17,23 @@ class MemoryCacheItem implements CacheItemInterface {
         $this->pool = $pool;
         $this->key = $key;
         $this->value = $data['value'];
-        $this->ttd = $data['ttd'];
+        $this->expiration = $data['ttd'];
         $this->hit = $data['hit'];
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the stored value regardless of hit status.
+     *
+     * This method is intended for use only by the MemoryPool. Other callers
+     * should not use it.
+     *
+     * @internal
+     *
+     * @return mixed
+     *   The stored value.
      */
-    protected function write($key, $value, \DateTime $ttd) {
-      $this->pool->write($key, $value, $ttd);
+    public function getRawValue()
+    {
+        return $this->value;
     }
-
 }

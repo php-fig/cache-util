@@ -6,13 +6,14 @@ namespace Psr\Cache;
  * An in-memory implementation of the Pool interface.
  */
 class MemoryPool implements CacheItemPoolInterface {
+    use CachePoolDeferTrait;
 
     /**
      * The stored data in this cache pool.
      *
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * {@inheritdoc}
@@ -28,6 +29,18 @@ class MemoryPool implements CacheItemPoolInterface {
         }
 
         return new MemoryCacheItem($this, $key, $this->data[$key]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItems(array $keys = array())
+    {
+        $collection = [];
+        foreach ($keys as $key) {
+            $collection[$key] = $this->getItem($key);
+        }
+        return $collection;
     }
 
     /**
@@ -50,17 +63,19 @@ class MemoryPool implements CacheItemPoolInterface {
     }
 
     /**
-     * @param $key
-     * @param mixed $value
-     *   The
-     * @param \DateTime $expiration
-     *   The time after which the saved item should be considered expired.
+     * {@inheritdoc}
      */
-    public function write($key, $value, \DateTime $expiration) {
-        $this->data[$key] = [
-            'value' => $value,
-            'ttd' => $expiration,
-            'hit' => TRUE,
-        ];
+    protected function write(array $items)
+    {
+        /** @var \Psr\Cache\CacheItemInterface $item  */
+        foreach ($items as $item) {
+            $this->data[$item->getKey()] = [
+              'value' => $item->getRawValue(),
+              'ttd' => $item->getExpiration(),
+              'hit' => TRUE,
+            ];
+        }
+
+        return true;
     }
 }
