@@ -27,7 +27,10 @@ class MemoryPool implements CacheItemPoolInterface {
      */
     public function getItem($key)
     {
-        if (!array_key_exists($key, $this->data) || $this->data[$key]['ttd'] < new \DateTime()) {
+        // This method will either return True or throw an appropriate exception.
+        $this->validateKey($key);
+
+        if (!$this->hasItem($key)) {
             $this->data[$key] = [
                 'value' => NULL,
                 'hit' => FALSE,
@@ -72,14 +75,31 @@ class MemoryPool implements CacheItemPoolInterface {
     /**
      * {@inheritdoc}
      */
+    public function deleteItem($key)
+    {
+        return $this->deleteItems([$key]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasItem($key)
+    {
+        return array_key_exists($key, $this->data) && $this->data[$key]['ttd'] > new \DateTime();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function write(array $items)
     {
         /** @var \Psr\Cache\CacheItemInterface $item  */
         foreach ($items as $item) {
             $this->data[$item->getKey()] = [
-              'value' => $item->getRawValue(),
-              'ttd' => $item->getExpiration(),
-              'hit' => TRUE,
+                // Assumes use of the BasicCacheItemTrait.
+                'value' => $item->getRawValue(),
+                'ttd' => $item->getExpiration(),
+                'hit' => TRUE,
             ];
         }
 
