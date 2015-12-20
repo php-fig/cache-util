@@ -1,6 +1,6 @@
 <?php
 
-namespace Psr\Cache;
+namespace Fig\Cache;
 
 /**
  * Basic implementation of a backend-agnostic cache item.

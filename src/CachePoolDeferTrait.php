@@ -1,6 +1,8 @@
 <?php
 
-namespace Psr\Cache;
+namespace Fig\Cache;
+
+use Psr\Cache\CacheItemInterface;
 
 
 /**

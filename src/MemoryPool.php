@@ -1,6 +1,8 @@
 <?php
 
-namespace Psr\Cache;
+namespace Fig\Cache;
+
+use Psr\Cache\CacheItemPoolInterface;
 
 /**
  * An in-memory implementation of the Pool interface.
