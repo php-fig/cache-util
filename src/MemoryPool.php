@@ -97,7 +97,7 @@ class MemoryPool implements CacheItemPoolInterface {
         /** @var \Psr\Cache\CacheItemInterface $item  */
         foreach ($items as $item) {
             $this->data[$item->getKey()] = [
-                // Assumes use of the BasicCacheItemTrait.
+                // Assumes use of the BasicCacheItemAccessorsTrait.
                 'value' => $item->getRawValue(),
                 'ttd' => $item->getExpiration(),
                 'hit' => TRUE,

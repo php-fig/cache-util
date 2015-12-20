@@ -9,6 +9,7 @@ use Psr\Cache\CacheItemInterface;
  */
 class MemoryCacheItem implements CacheItemInterface {
     use BasicCacheItemTrait;
+    use BasicCacheItemAccessorsTrait;
 
     /**
      * Constructs a new MemoryCacheItem.
@@ -23,21 +24,5 @@ class MemoryCacheItem implements CacheItemInterface {
         $this->value = $data['value'];
         $this->expiration = $data['ttd'];
         $this->hit = $data['hit'];
-    }
-
-    /**
-     * Returns the stored value regardless of hit status.
-     *
-     * This method is intended for use only by the MemoryPool. Other callers
-     * should not use it.
-     *
-     * @internal
-     *
-     * @return mixed
-     *   The stored value.
-     */
-    public function getRawValue()
-    {
-        return $this->value;
     }
 }
