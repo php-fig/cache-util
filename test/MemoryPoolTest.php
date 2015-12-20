@@ -83,5 +83,4 @@ class MemoryPoolTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($item->get());
         $this->assertFalse($item->isHit());
     }
-
 }

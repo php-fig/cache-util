@@ -23,7 +23,6 @@ trait KeyValidatorTrait
      */
     protected function validateKey($key)
     {
-        return TRUE;
+        return true;
     }
-
 }

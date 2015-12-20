@@ -10,7 +10,8 @@ use Psr\Cache\CacheItemPoolInterface;
  * This class is not especially useful in production, but could be used
  * for testing purposes.
  */
-class MemoryPool implements CacheItemPoolInterface {
+class MemoryPool implements CacheItemPoolInterface
+{
     use BasicPoolTrait;
     use KeyValidatorTrait;
 
@@ -41,18 +42,19 @@ class MemoryPool implements CacheItemPoolInterface {
      *
      * @return array
      */
-    protected function emptyItem() {
+    protected function emptyItem()
+    {
         return [
-            'value' => NULL,
-            'hit' => FALSE,
-            'ttd' => NULL,
+            'value' => null,
+            'hit' => false,
+            'ttd' => null,
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getItems(array $keys = array())
+    public function getItems(array $keys = [])
     {
         // This method will throw an appropriate exception if any key is not valid.
         array_map([$this, 'validateKey'], $keys);
@@ -102,7 +104,7 @@ class MemoryPool implements CacheItemPoolInterface {
                 // Assumes use of the BasicCacheItemAccessorsTrait.
                 'value' => $item->getRawValue(),
                 'ttd' => $item->getExpiration(),
-                'hit' => TRUE,
+                'hit' => true,
             ];
         }
 

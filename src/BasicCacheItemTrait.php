@@ -7,7 +7,8 @@ namespace Fig\Cache;
  *
  * @implements \Psr\Cache\CacheItemInterface
  */
-trait BasicCacheItemTrait {
+trait BasicCacheItemTrait
+{
 
     /**
      * @var string
@@ -42,13 +43,13 @@ trait BasicCacheItemTrait {
      */
     public function get()
     {
-        return $this->isHit() ? $this->value : NULL;
+        return $this->isHit() ? $this->value : null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function set($value = NULL)
+    public function set($value = null)
     {
         $this->value = $value;
         return $this;
@@ -65,7 +66,8 @@ trait BasicCacheItemTrait {
     /**
      * {@inheritdoc}
      */
-    public function expiresAt($expiration) {
+    public function expiresAt($expiration)
+    {
         if (is_null($expiration)) {
             $this->expiration = new \DateTime('now +1 year');
         } else {
@@ -78,7 +80,8 @@ trait BasicCacheItemTrait {
     /**
      * {@inheritdoc}
      */
-    public function expiresAfter($time) {
+    public function expiresAfter($time)
+    {
         if (is_null($time)) {
             $this->expiration = new \DateTime('now +1 year');
         } elseif (is_numeric($time)) {
@@ -91,5 +94,4 @@ trait BasicCacheItemTrait {
         }
         return $this;
     }
-
 }

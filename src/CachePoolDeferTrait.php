@@ -4,11 +4,11 @@ namespace Fig\Cache;
 
 use Psr\Cache\CacheItemInterface;
 
-
 /**
  * Utility implementation of the deferring logic for cache pools.
  */
-trait CachePoolDeferTrait {
+trait CachePoolDeferTrait
+{
 
     /**
      * Deferred cache items to be saved later.

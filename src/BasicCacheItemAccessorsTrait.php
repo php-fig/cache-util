@@ -24,7 +24,8 @@ trait BasicCacheItemAccessorsTrait
      *
      * @internal
      */
-    public function getExpiration() {
+    public function getExpiration()
+    {
         return $this->expiration ?: new \DateTime('now +1 year');
     }
 

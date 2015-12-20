@@ -7,7 +7,8 @@ use Psr\Cache\CacheItemInterface;
 /**
  * In-memory implementation of a cache item.
  */
-class MemoryCacheItem implements CacheItemInterface {
+class MemoryCacheItem implements CacheItemInterface
+{
     use BasicCacheItemTrait;
     use BasicCacheItemAccessorsTrait;
 
@@ -19,7 +20,8 @@ class MemoryCacheItem implements CacheItemInterface {
      * @param array $data
      *   An associative array of data from the Memory Pool.
      */
-    public function  __construct($key, array $data) {
+    public function __construct($key, array $data)
+    {
         $this->key = $key;
         $this->value = $data['value'];
         $this->expiration = $data['ttd'];
