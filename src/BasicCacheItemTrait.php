@@ -48,10 +48,9 @@ trait BasicCacheItemTrait {
     /**
      * {@inheritdoc}
      */
-    public function set($value = NULL, $ttl = null)
+    public function set($value = NULL)
     {
         $this->value = $value;
-        $this->setExpiration($ttl);
         return $this;
     }
 
@@ -66,39 +65,43 @@ trait BasicCacheItemTrait {
     /**
      * {@inheritdoc}
      */
-    public function delete()
-    {
-        $this->db->delete($this->key);
+    public function expiresAt($expiration) {
+        if (is_null($expiration)) {
+            $this->expiration = new \DateTime('now +1 year');
+        } else {
+            assert('$expiration instanceof \DateTimeInterface');
+            $this->expiration = $expiration;
+        }
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function exists()
-    {
-        return $this->hit;
+    public function expiresAfter($time) {
+        if (is_null($time)) {
+            $this->expiration = new \DateTime('now +1 year');
+        } elseif (is_numeric($time)) {
+            $this->expiration = new \DateTime('now +' . $time . ' seconds');
+        } else {
+            assert('$time instanceof DateInterval');
+            $expiration = new \DateTime();
+            $expiration->add($time);
+            $this->expiration = $expiration;
+        }
+        return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the expiration timestamp.
+     *
+     * Although not part of the CacheItemInterface, this method is used by
+     * the pool for extracting information for saving.
+     *
+     * @return \DateTime
+     *   The timestamp at which this cache item should expire.
      */
     public function getExpiration() {
         return $this->expiration;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setExpiration($ttl = null) {
-        if ($ttl instanceof \DateTime) {
-            $this->expiration = $ttl;
-        }
-        elseif (is_numeric($ttl)) {
-            $this->expiration = new \DateTime('now +' . $ttl . ' seconds');
-        }
-        elseif (is_null($ttl)) {
-            $this->expiration = new \DateTime('now +1 year');
-        }
-        return $this;
     }
 }
