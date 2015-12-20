@@ -3,7 +3,6 @@
 namespace Fig\Cache;
 
 use Psr\Cache\CacheItemPoolInterface;
-use Psr\Cache\InvalidArgumentException;
 
 /**
  * An in-memory implementation of the Pool interface.
@@ -55,6 +54,9 @@ class MemoryPool implements CacheItemPoolInterface {
      */
     public function getItems(array $keys = array())
     {
+        // This method will throw an appropriate exception if any key is not valid.
+        array_map([$this, 'validateKey'], $keys);
+
         $collection = [];
         foreach ($keys as $key) {
             $collection[$key] = $this->getItem($key);
