@@ -2,7 +2,7 @@
 
 namespace Fig\Cache\Test;
 
-use Fig\Cache\MemoryPool;
+use Fig\Cache\Memory\MemoryPool;
 
 class MemoryPoolTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,7 +1,9 @@
 <?php
 
-namespace Fig\Cache;
+namespace Fig\Cache\Memory;
 
+use Fig\Cache\BasicPoolTrait;
+use Fig\Cache\KeyValidatorTrait;
 use Psr\Cache\CacheItemPoolInterface;
 
 /**

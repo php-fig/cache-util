@@ -1,7 +1,9 @@
 <?php
 
-namespace Fig\Cache;
+namespace Fig\Cache\Memory;
 
+use Fig\Cache\BasicCacheItemAccessorsTrait;
+use Fig\Cache\BasicCacheItemTrait;
 use Psr\Cache\CacheItemInterface;
 
 /**
