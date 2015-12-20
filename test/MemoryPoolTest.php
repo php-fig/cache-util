@@ -19,10 +19,16 @@ class MemoryPoolTest extends \PHPUnit_Framework_TestCase
         $item = $pool->getItem('foo');
 
         $this->assertNull($item->get());
+        $this->assertFalse($item->isHit());
     }
 
     /**
      * Verifies that primitive items can be added and retrieved from the pool.
+     *
+     * @param mixed $value
+     *   A value to try and cache.
+     * @param string $type
+     *   The type of variable we expect to be cached.
      *
      * @dataProvider providerPrimitiveValues
      */
@@ -53,6 +59,29 @@ class MemoryPoolTest extends \PHPUnit_Framework_TestCase
             [['a', 'b', 'c'], 'array'],
             [['a' => 'A', 'b' => 'B', 'c' => 'C'], 'array'],
         ];
+    }
+
+    /**
+     * Verifies that an item with an expiration time in the past won't be retrieved.
+     *
+     * @param mixed $value
+     *   A value to try and cache.
+     *
+     * @dataProvider providerPrimitiveValues
+     */
+    public function testExpiresAt($value)
+    {
+        $pool = new MemoryPool();
+
+        $item = $pool->getItem('foo');
+        $item
+            ->set($value)
+            ->expiresAt(new \DateTime('-1 minute'));
+        $pool->save($item);
+
+        $item = $pool->getItem('foo');
+        $this->assertNull($item->get());
+        $this->assertFalse($item->isHit());
     }
 
 }

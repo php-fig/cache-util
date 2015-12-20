@@ -11,12 +11,14 @@ class MemoryCacheItem implements CacheItemInterface {
     use BasicCacheItemTrait;
 
     /**
-     * @var MemoryPool
+     * Constructs a new MemoryCacheItem.
+     *
+     * @param string $key
+     *   The key of the cache item this object represents.
+     * @param array $data
+     *   An associative array of data from the Memory Pool.
      */
-    protected $pool;
-
-    public function  __construct(MemoryPool $pool, $key, array $data) {
-        $this->pool = $pool;
+    public function  __construct($key, array $data) {
         $this->key = $key;
         $this->value = $data['value'];
         $this->expiration = $data['ttd'];

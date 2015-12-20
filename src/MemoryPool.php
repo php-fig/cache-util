@@ -12,7 +12,7 @@ use Psr\Cache\InvalidArgumentException;
  * for testing purposes.
  */
 class MemoryPool implements CacheItemPoolInterface {
-    use CachePoolDeferTrait;
+    use BasicPoolTrait;
     use KeyValidatorTrait;
 
     /**
@@ -31,14 +31,23 @@ class MemoryPool implements CacheItemPoolInterface {
         $this->validateKey($key);
 
         if (!$this->hasItem($key)) {
-            $this->data[$key] = [
-                'value' => NULL,
-                'hit' => FALSE,
-                'ttd' => NULL,
-            ];
+            $this->data[$key] = $this->emptyItem();
         }
 
-        return new MemoryCacheItem($this, $key, $this->data[$key]);
+        return new MemoryCacheItem($key, $this->data[$key]);
+    }
+
+    /**
+     * Returns an empty item definition.
+     *
+     * @return array
+     */
+    protected function emptyItem() {
+        return [
+            'value' => NULL,
+            'hit' => FALSE,
+            'ttd' => NULL,
+        ];
     }
 
     /**
@@ -70,14 +79,6 @@ class MemoryPool implements CacheItemPoolInterface {
         foreach ($keys as $key) {
             unset($this->data[$key]);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteItem($key)
-    {
-        return $this->deleteItems([$key]);
     }
 
     /**
