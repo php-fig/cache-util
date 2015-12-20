@@ -5,6 +5,10 @@ namespace Fig\Cache;
 
 /**
  * Provides basic accessors for extracting item data from within a pool.
+ *
+ * This trait is intended to be used in conjunection with BasicCacheItemTrait.
+ *
+ * @see BasicCacheItemTrait
  */
 trait BasicCacheItemAccessorsTrait
 {
@@ -17,6 +21,8 @@ trait BasicCacheItemAccessorsTrait
      *
      * @return \DateTime
      *   The timestamp at which this cache item should expire.
+     *
+     * @internal
      */
     public function getExpiration() {
         return $this->expiration ?: new \DateTime('now +1 year');
@@ -29,6 +35,8 @@ trait BasicCacheItemAccessorsTrait
      * the pool for extracting information for saving.
      *
      * @return mixed
+     *
+     * @internal
      */
     public function getRawValue()
     {

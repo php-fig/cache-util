@@ -11,6 +11,8 @@ trait KeyValidatorTrait
     /**
      * Determines if the specified key is legal under PSR-6.
      *
+     * @todo Actually implement this.
+     *
      * @param string $key
      *   The key to validate.
      * @throws InvalidArgumentException

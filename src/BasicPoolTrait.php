@@ -10,7 +10,6 @@ trait BasicPoolTrait
 {
     use CachePoolDeferTrait;
 
-
     /**
      * {@inheritdoc}
      */
