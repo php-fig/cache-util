@@ -3,12 +3,17 @@
 namespace Fig\Cache;
 
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Cache\InvalidArgumentException;
 
 /**
  * An in-memory implementation of the Pool interface.
+ *
+ * This class is not especially useful in production, but could be used
+ * for testing purposes.
  */
 class MemoryPool implements CacheItemPoolInterface {
     use CachePoolDeferTrait;
+    use KeyValidatorTrait;
 
     /**
      * The stored data in this cache pool.
