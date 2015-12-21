@@ -22,8 +22,7 @@ trait CachePoolDeferTrait
      */
     public function save(CacheItemInterface $item)
     {
-        $this->write([$item]);
-        return $this;
+        return $this->write([$item]);
     }
 
     /**
@@ -32,7 +31,7 @@ trait CachePoolDeferTrait
     public function saveDeferred(CacheItemInterface $item)
     {
         $this->deferred[] = $item;
-        return $this;
+        return true;
     }
 
     /**
