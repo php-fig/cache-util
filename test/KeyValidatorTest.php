@@ -1,0 +1,75 @@
+<?php
+
+namespace Fig\Cache\Test;
+
+use Fig\Cache\Memory\MemoryPool;
+use Fig\Cache\Memory\MemoryCacheItem;
+use Fig\Cache\InvalidArgumentException;
+
+class KeyValidatorTest extends \PHPUnit_Framework_TestCase
+{
+    /** @var MemoryPool */
+    protected $pool;
+
+    protected function setUp()
+    {
+        $this->pool = new MemoryPool();
+    }
+
+    /**
+     * Verifies key's name in positive cases.
+     *
+     * @param string $key
+     *   The key's name.
+     *
+     * @dataProvider providerValidKeyNames
+     */
+    public function testPositiveValidateKey($key)
+    {
+        $this->assertInstanceOf(MemoryCacheItem::class, $this->pool->getItem($key));
+    }
+
+    /**
+     * Provides a set of valid test key names.
+     *
+     * @return array
+     */
+    public function providerValidKeyNames()
+    {
+        return [
+            ['bar'],
+            ['barFoo1234567890'],
+            ['bar_Foo.1'],
+            ['verylongname' . implode('', range(1, 10))],
+        ];
+    }
+
+    /**
+     * Verifies key's name in negative cases.
+     *
+     * @param string $key
+     *   The key's name.
+     *
+     * @expectedException InvalidArgumentException
+     * @dataProvider providerNotValidKeyNames
+     */
+    public function testNegativeValidateKey($key)
+    {
+        $this->pool->getItem($key);
+    }
+
+    /**
+     * Provides a set of not valid test key names.
+     *
+     * @return array
+     */
+    public function providerNotValidKeyNames()
+    {
+        return [
+            [''],
+            ['bar Foo'],
+            ['bar{}()/\@:Foo'],
+            ['verylongname' . implode('', range(1, 40))],
+        ];
+    }
+}

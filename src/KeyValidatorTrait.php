@@ -3,15 +3,11 @@
 
 namespace Fig\Cache;
 
-use Psr\Cache\InvalidArgumentException;
-
 trait KeyValidatorTrait
 {
 
     /**
      * Determines if the specified key is legal under PSR-6.
-     *
-     * @todo Actually implement this.
      *
      * @param string $key
      *   The key to validate.
@@ -23,6 +19,12 @@ trait KeyValidatorTrait
      */
     protected function validateKey($key)
     {
+        $matched = preg_match('/^[A-Za-z0-9_.]{1,64}$/', $key);
+
+        if (1 !== $matched) {
+            throw new InvalidArgumentException('Can\'t validate the specified key');
+        }
+
         return true;
     }
 }
