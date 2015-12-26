@@ -40,7 +40,8 @@ class KeyValidatorTest extends \PHPUnit_Framework_TestCase
             ['bar'],
             ['barFoo1234567890'],
             ['bar_Foo.1'],
-            ['verylongname' . implode('', range(1, 10))],
+            ['1'],
+            [str_repeat('a', 64)]
         ];
     }
 
@@ -66,10 +67,18 @@ class KeyValidatorTest extends \PHPUnit_Framework_TestCase
     public function providerNotValidKeyNames()
     {
         return [
+            [null],
             [''],
             ['bar Foo'],
-            ['bar{}()/\@:Foo'],
-            ['verylongname' . implode('', range(1, 40))],
+            ['bar{Foo'],
+            ['bar}Foo'],
+            ['bar(Foo'],
+            ['bar)Foo'],
+            ['bar/Foo'],
+            ['bar\Foo'],
+            ['bar@Foo'],
+            ['bar:Foo'],
+            [str_repeat('a', 65)]
         ];
     }
 }
