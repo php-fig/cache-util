@@ -1,5 +1,5 @@
 {
-    "name": "psr/cache-util",
+    "name": "fig/cache-util",
     "description": "Useful utility classes and traits for implementing the PSR cache standard",
     "keywords": ["psr", "psr-6", "cache"],
     "license": "MIT",
