@@ -68,8 +68,8 @@ class KeyValidatorTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [null],
+            [1],
             [''],
-            ['bar Foo'],
             ['bar{Foo'],
             ['bar}Foo'],
             ['bar(Foo'],
@@ -77,8 +77,7 @@ class KeyValidatorTest extends \PHPUnit_Framework_TestCase
             ['bar/Foo'],
             ['bar\Foo'],
             ['bar@Foo'],
-            ['bar:Foo'],
-            [str_repeat('a', 65)]
+            ['bar:Foo']
         ];
     }
 }

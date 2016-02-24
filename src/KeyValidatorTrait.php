@@ -1,11 +1,11 @@
 <?php
-
-
 namespace Fig\Cache;
 
+/**
+ * Key validator trait
+ */
 trait KeyValidatorTrait
 {
-
     /**
      * Determines if the specified key is legal under PSR-6.
      *
@@ -19,9 +19,12 @@ trait KeyValidatorTrait
      */
     protected function validateKey($key)
     {
-        $matched = preg_match('/^[A-Za-z0-9_.]{1,64}$/', $key);
+        if (!is_string($key) || empty($key)) {
+            throw new InvalidArgumentException('Key should be a not empty string');
+        }
 
-        if (1 !== $matched) {
+        $unsupportedMatched = preg_match('#[{}()/\\\@:]#', $key);
+        if ($unsupportedMatched > 0) {
             throw new InvalidArgumentException('Can\'t validate the specified key');
         }
 
