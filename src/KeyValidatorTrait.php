@@ -19,8 +19,8 @@ trait KeyValidatorTrait
      */
     protected function validateKey($key)
     {
-        if (!is_string($key) || empty($key)) {
-            throw new InvalidArgumentException('Key should be a not empty string');
+        if (!is_string($key) || $key === '') {
+            throw new InvalidArgumentException('Key should be a non empty string');
         }
 
         $unsupportedMatched = preg_match('#[{}()/\\\@:]#', $key);
