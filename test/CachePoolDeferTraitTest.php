@@ -5,8 +5,9 @@ namespace Fig\Cache\Test;
 use Fig\Cache\CachePoolDeferTrait;
 use Prophecy\Argument;
 use Psr\Cache\CacheItemInterface;
+use PHPUnit\Framework\TestCase;
 
-class CachePoolDeferTraitTest extends \PHPUnit_Framework_TestCase
+class CachePoolDeferTraitTest extends TestCase
 {
     private $traitStub;
     private $itemStub;
@@ -14,7 +15,7 @@ class CachePoolDeferTraitTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->traitStub = $this->getMockForTrait(CachePoolDeferTrait::class);
-        $this->itemStub = $this->getMock(CacheItemInterface::class);
+        $this->itemStub = $this->createMock(CacheItemInterface::class);
     }
 
     public function testSaveSuccess()

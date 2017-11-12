@@ -5,8 +5,9 @@ namespace Fig\Cache\Test;
 use Fig\Cache\Memory\MemoryPool;
 use Fig\Cache\Memory\MemoryCacheItem;
 use Fig\Cache\InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
-class KeyValidatorTest extends \PHPUnit_Framework_TestCase
+class KeyValidatorTest extends TestCase
 {
     /** @var MemoryPool */
     protected $pool;
