@@ -3,8 +3,9 @@
 namespace Fig\Cache\Test;
 
 use Fig\Cache\Memory\MemoryPool;
+use PHPUnit\Framework\TestCase;
 
-class MemoryPoolTest extends \PHPUnit_Framework_TestCase
+class MemoryPoolTest extends TestCase
 {
 
     /**
