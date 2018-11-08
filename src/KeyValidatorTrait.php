@@ -6,6 +6,20 @@ namespace Fig\Cache;
  */
 trait KeyValidatorTrait
 {
+
+    /**
+     * Characters which cannot be used in cache key.
+     *
+     * The characters returned by this function are reserved for future extensions and MUST NOT be
+     * supported by implementing libraries
+     *
+     * @return string
+     */
+    final public function getReservedKeyCharacters()
+    {
+        return '{}()/\@:';
+    }
+
     /**
      * Determines if the specified key is legal under PSR-6.
      *
@@ -23,7 +37,7 @@ trait KeyValidatorTrait
             throw new InvalidArgumentException('Key should be a non empty string');
         }
 
-        $unsupportedMatched = preg_match('#[{}()/\\\@:]#', $key);
+        $unsupportedMatched = preg_match('#[' . preg_quote($this->getReservedKeyCharacters()) . ']#', $key);
         if ($unsupportedMatched > 0) {
             throw new InvalidArgumentException('Can\'t validate the specified key');
         }
