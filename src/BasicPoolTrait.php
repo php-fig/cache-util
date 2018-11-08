@@ -9,14 +9,6 @@ namespace Fig\Cache;
 trait BasicPoolTrait
 {
     use CachePoolDeferTrait;
-    
-    /**
-     * Characters which cannot be used in cache key.
-     *
-     * The following characters are reserved for future extensions and MUST NOT be 
-     * supported by implementing libraries
-     */
-    const RESERVED_KEY_CHARACTERS = '{}()/\@:';
 
     /**
      * {@inheritdoc}
