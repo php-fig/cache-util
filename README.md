@@ -1,5 +1,7 @@
 # PSR-6 Cache Utilities
 
+![Quality Assurance](https://github.com/php-fig/cache-util/workflows/Quality%20Assurance/badge.svg)
+
 This package contains a series of traits and base classes to cover the common,
 boilerplate portions of implementing a PSR-6-compliant cache library.
 
