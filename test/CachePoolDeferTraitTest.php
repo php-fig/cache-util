@@ -3,62 +3,62 @@
 namespace Fig\Cache\Test;
 
 use Fig\Cache\CachePoolDeferTrait;
-use Prophecy\Argument;
+use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemInterface;
 
-class CachePoolDeferTraitTest extends \PHPUnit_Framework_TestCase
+class CachePoolDeferTraitTest extends TestCase
 {
     private $traitStub;
     private $itemStub;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->traitStub = $this->getMockForTrait(CachePoolDeferTrait::class);
-        $this->itemStub = $this->getMock(CacheItemInterface::class);
+        $this->itemStub = $this->createMock(CacheItemInterface::class);
     }
 
-    public function testSaveSuccess()
+    public function testSaveSuccess(): void
     {
-        $this->traitStub->expects($this->once())
+        $this->traitStub->expects(static::once())
             ->method('write')
-            ->with($this->equalTo([$this->itemStub]))
-            ->will($this->returnValue(true));
-        $this->assertTrue($this->traitStub->save($this->itemStub));
+            ->with(static::equalTo([$this->itemStub]))
+            ->willReturn(true);
+        static::assertTrue($this->traitStub->save($this->itemStub));
     }
 
-    public function testSaveFail()
+    public function testSaveFail(): void
     {
-        $this->traitStub->expects($this->once())
+        $this->traitStub->expects(static::once())
             ->method('write')
-            ->will($this->returnValue(false));
-        $this->assertFalse($this->traitStub->save($this->itemStub));
+            ->willReturn(false);
+        static::assertFalse($this->traitStub->save($this->itemStub));
     }
 
-    public function testSaveDeferred()
+    public function testSaveDeferred(): void
     {
-        $this->assertTrue($this->traitStub->saveDeferred($this->itemStub));
+        static::assertTrue($this->traitStub->saveDeferred($this->itemStub));
     }
 
-    public function testCommitSuccess()
+    public function testCommitSuccess(): void
     {
         $otherItem = clone $this->itemStub;
-        $this->traitStub->expects($this->once())
+        $this->traitStub->expects(static::once())
             ->method('write')
-            ->with($this->equalTo([$this->itemStub, $otherItem]))
-            ->will($this->returnValue(true));
+            ->with(static::equalTo([$this->itemStub, $otherItem]))
+            ->willReturn(true);
 
         $this->traitStub->saveDeferred($this->itemStub);
         $this->traitStub->saveDeferred($otherItem);
-        $this->assertTrue($this->traitStub->commit());
+        static::assertTrue($this->traitStub->commit());
     }
 
-    public function testCommitFail()
+    public function testCommitFail(): void
     {
-        $this->traitStub->expects($this->once())
+        $this->traitStub->expects(static::once())
             ->method('write')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $this->traitStub->saveDeferred($this->itemStub);
-        $this->assertFalse($this->traitStub->commit());
+        static::assertFalse($this->traitStub->commit());
     }
 }

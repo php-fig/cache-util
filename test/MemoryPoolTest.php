@@ -3,23 +3,24 @@
 namespace Fig\Cache\Test;
 
 use Fig\Cache\Memory\MemoryPool;
+use PHPUnit\Framework\TestCase;
 
-class MemoryPoolTest extends \PHPUnit_Framework_TestCase
+class MemoryPoolTest extends TestCase
 {
 
     /**
      * Verifies that a cache miss returns NULL.
      */
-    public function testEmptyItem()
+    public function testEmptyItem(): void
     {
         $pool = new MemoryPool();
 
-        $this->assertFalse($pool->hasItem('foo'));
+        static::assertFalse($pool->hasItem('foo'));
 
         $item = $pool->getItem('foo');
 
-        $this->assertNull($item->get());
-        $this->assertFalse($item->isHit());
+        static::assertNull($item->get());
+        static::assertFalse($item->isHit());
     }
 
     /**
@@ -32,7 +33,7 @@ class MemoryPoolTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider providerPrimitiveValues
      */
-    public function testAddItem($value, $type)
+    public function testAddItem($value, $type): void
     {
         $pool = new MemoryPool();
 
@@ -41,8 +42,8 @@ class MemoryPoolTest extends \PHPUnit_Framework_TestCase
         $pool->save($item);
 
         $item = $pool->getItem('foo');
-        $this->assertEquals($value, $item->get());
-        $this->assertEquals($type, gettype($item->get()));
+        static::assertEquals($value, $item->get());
+        static::assertEquals($type, gettype($item->get()));
     }
 
     /**
@@ -50,7 +51,7 @@ class MemoryPoolTest extends \PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public function providerPrimitiveValues()
+    public function providerPrimitiveValues(): array
     {
         return [
             ['bar', 'string'],
@@ -69,7 +70,7 @@ class MemoryPoolTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider providerPrimitiveValues
      */
-    public function testExpiresAt($value)
+    public function testExpiresAt($value): void
     {
         $pool = new MemoryPool();
 
@@ -80,7 +81,7 @@ class MemoryPoolTest extends \PHPUnit_Framework_TestCase
         $pool->save($item);
 
         $item = $pool->getItem('foo');
-        $this->assertNull($item->get());
-        $this->assertFalse($item->isHit());
+        static::assertNull($item->get());
+        static::assertFalse($item->isHit());
     }
 }
