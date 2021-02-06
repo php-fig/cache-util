@@ -77,7 +77,7 @@ class MemoryPoolTest extends TestCase
         $item = $pool->getItem('foo');
         $item
             ->set($value)
-            ->expiresAt(new \DateTime('-1 minute'));
+            ->expiresAt(new \DateTimeImmutable('-1 minute'));
         $pool->save($item);
 
         $item = $pool->getItem('foo');

@@ -15,7 +15,7 @@ trait KeyValidatorTrait
      *
      * @return string
      */
-    final public function getReservedKeyCharacters()
+    final public function getReservedKeyCharacters(): string
     {
         return '{}()/\@:';
     }
@@ -31,7 +31,7 @@ trait KeyValidatorTrait
      * @return bool
      *   TRUE if the specified key is legal.
      */
-    protected function validateKey($key)
+    protected function validateKey($key): bool
     {
         if (!is_string($key) || $key === '') {
             throw new InvalidArgumentException('Key should be a non empty string');

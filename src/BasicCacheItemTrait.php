@@ -10,30 +10,15 @@ namespace Fig\Cache;
 trait BasicCacheItemTrait
 {
 
-    /**
-     * @var string
-     */
-    protected $key;
+    protected string $key;
 
-    /**
-     * @var mixed
-     */
-    protected $value;
+    protected mixed $value;
 
-    /**
-     * @var boolean
-     */
-    protected $hit;
+    protected bool $hit;
 
-    /**
-     * @var \DateTime
-     */
-    protected $expiration;
+    protected ?\DateTimeInterface $expiration;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -41,7 +26,7 @@ trait BasicCacheItemTrait
     /**
      * {@inheritdoc}
      */
-    public function get()
+    public function get(): mixed
     {
         return $this->isHit() ? $this->value : null;
     }
@@ -49,7 +34,7 @@ trait BasicCacheItemTrait
     /**
      * {@inheritdoc}
      */
-    public function set($value = null)
+    public function set($value = null): static
     {
         $this->value = $value;
         return $this;
@@ -58,7 +43,7 @@ trait BasicCacheItemTrait
     /**
      * {@inheritdoc}
      */
-    public function isHit()
+    public function isHit(): bool
     {
         return $this->hit;
     }
@@ -66,32 +51,23 @@ trait BasicCacheItemTrait
     /**
      * {@inheritdoc}
      */
-    public function expiresAt($expiration)
+    public function expiresAt(?\DateTimeInterface $expiration): static
     {
-        if (is_null($expiration)) {
-            $this->expiration = new \DateTime('now +1 year');
-        } else {
-            assert('$expiration instanceof \DateTimeInterface');
-            $this->expiration = $expiration;
-        }
+        $this->expiration = $expiration ?? new \DateTimeImmutable('now +1 year');
+
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function expiresAfter($time)
+    public function expiresAfter(int|\DateInterval|null $time): static
     {
-        if (is_null($time)) {
-            $this->expiration = new \DateTime('now +1 year');
-        } elseif (is_numeric($time)) {
-            $this->expiration = new \DateTime('now +' . $time . ' seconds');
-        } else {
-            assert('$time instanceof DateInterval');
-            $expiration = new \DateTime();
-            $expiration->add($time);
-            $this->expiration = $expiration;
-        }
+        $this->expiration = match(true) {
+            is_null($time) => new \DateTimeImmutable('now +1 year'),
+            is_int($time) => new \DateTimeImmutable('now +' . $time . ' seconds'),
+            $time instanceof \DateInterval => (new \DateTimeImmutable())->add($time),
+        };
         return $this;
     }
 }

@@ -4,6 +4,7 @@ namespace Fig\Cache\Memory;
 
 use Fig\Cache\BasicPoolTrait;
 use Fig\Cache\KeyValidatorTrait;
+use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
 /**
@@ -22,12 +23,12 @@ class MemoryPool implements CacheItemPoolInterface
      *
      * @var array
      */
-    protected $data = [];
+    protected array $data = [];
 
     /**
      * {@inheritdoc}
      */
-    public function getItem($key)
+    public function getItem($key): CacheItemInterface
     {
         // This method will either return True or throw an appropriate exception.
         $this->validateKey($key);
@@ -44,7 +45,7 @@ class MemoryPool implements CacheItemPoolInterface
      *
      * @return array
      */
-    protected function emptyItem()
+    protected function emptyItem(): array
     {
         return [
             'value' => null,
@@ -56,7 +57,7 @@ class MemoryPool implements CacheItemPoolInterface
     /**
      * {@inheritdoc}
      */
-    public function getItems(array $keys = [])
+    public function getItems(array $keys = []): iterable
     {
         // This method will throw an appropriate exception if any key is not valid.
         array_map([$this, 'validateKey'], $keys);
@@ -71,7 +72,7 @@ class MemoryPool implements CacheItemPoolInterface
     /**
      * {@inheritdoc}
      */
-    public function clear()
+    public function clear(): bool
     {
         $this->data = [];
         return true;
@@ -80,25 +81,26 @@ class MemoryPool implements CacheItemPoolInterface
     /**
      * {@inheritdoc}
      */
-    public function deleteItems(array $keys)
+    public function deleteItems(array $keys): bool
     {
         foreach ($keys as $key) {
             unset($this->data[$key]);
         }
+        return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasItem($key)
+    public function hasItem($key): bool
     {
-        return array_key_exists($key, $this->data) && $this->data[$key]['ttd'] > new \DateTime();
+        return array_key_exists($key, $this->data) && $this->data[$key]['ttd'] > new \DateTimeImmutable();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function write(array $items)
+    protected function write(array $items): bool
     {
         /** @var \Psr\Cache\CacheItemInterface $item  */
         foreach ($items as $item) {

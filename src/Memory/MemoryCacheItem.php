@@ -22,7 +22,7 @@ class MemoryCacheItem implements CacheItemInterface
      * @param array $data
      *   An associative array of data from the Memory Pool.
      */
-    public function __construct($key, array $data)
+    public function __construct(string $key, array $data)
     {
         $this->key = $key;
         $this->value = $data['value'];
