@@ -15,12 +15,12 @@ trait CachePoolDeferTrait
      *
      * @var CacheItemInterface[]
      */
-    protected $deferred = [];
+    protected array $deferred = [];
 
     /**
      * {@inheritdoc}
      */
-    public function save(CacheItemInterface $item)
+    public function save(CacheItemInterface $item): bool
     {
         return $this->write([$item]);
     }
@@ -28,7 +28,7 @@ trait CachePoolDeferTrait
     /**
      * {@inheritdoc}
      */
-    public function saveDeferred(CacheItemInterface $item)
+    public function saveDeferred(CacheItemInterface $item): bool
     {
         $this->deferred[] = $item;
         return true;
@@ -37,7 +37,7 @@ trait CachePoolDeferTrait
     /**
      * {@inheritdoc}
      */
-    public function commit()
+    public function commit(): bool
     {
         $success = $this->write($this->deferred);
         if ($success) {
@@ -54,5 +54,5 @@ trait CachePoolDeferTrait
      * @return bool
      *   TRUE if all provided items were successfully saved. FALSE otherwise.
      */
-    abstract protected function write(array $items);
+    abstract protected function write(array $items): bool;
 }

@@ -13,7 +13,7 @@ trait BasicPoolTrait
     /**
      * {@inheritdoc}
      */
-    public function deleteItem($key)
+    public function deleteItem(string $key): bool
     {
         return $this->deleteItems([$key]);
     }
@@ -21,5 +21,5 @@ trait BasicPoolTrait
     /**
      * {@inheritdoc}
      */
-    abstract public function deleteItems(array $items);
+    abstract public function deleteItems(array $items): bool;
 }

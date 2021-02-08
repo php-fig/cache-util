@@ -19,14 +19,14 @@ trait BasicCacheItemAccessorsTrait
      * Although not part of the CacheItemInterface, this method is used by
      * the pool for extracting information for saving.
      *
-     * @return \DateTime
+     * @return \DateTimeInterface
      *   The timestamp at which this cache item should expire.
      *
      * @internal
      */
-    public function getExpiration()
+    public function getExpiration(): \DateTimeInterface
     {
-        return $this->expiration ?: new \DateTime('now +1 year');
+        return $this->expiration ?? new \DateTime('now +1 year');
     }
 
     /**
@@ -39,7 +39,7 @@ trait BasicCacheItemAccessorsTrait
      *
      * @internal
      */
-    public function getRawValue()
+    public function getRawValue(): mixed
     {
         return $this->value;
     }
