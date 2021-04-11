@@ -2,16 +2,17 @@
 
 namespace Fig\Cache\Test;
 
-use Fig\Cache\Memory\MemoryPool;
-use Fig\Cache\Memory\MemoryCacheItem;
 use Fig\Cache\InvalidArgumentException;
+use Fig\Cache\Memory\MemoryCacheItem;
+use Fig\Cache\Memory\MemoryPool;
+use PHPUnit\Framework\TestCase;
 
-class KeyValidatorTest extends \PHPUnit_Framework_TestCase
+class KeyValidatorTest extends TestCase
 {
     /** @var MemoryPool */
     protected $pool;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->pool = new MemoryPool();
     }
@@ -26,7 +27,7 @@ class KeyValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testPositiveValidateKey($key)
     {
-        $this->assertInstanceOf(MemoryCacheItem::class, $this->pool->getItem($key));
+        static::assertInstanceOf(MemoryCacheItem::class, $this->pool->getItem($key));
     }
 
     /**
@@ -34,7 +35,7 @@ class KeyValidatorTest extends \PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public function providerValidKeyNames()
+    public function providerValidKeyNames(): array
     {
         return [
             ['bar'],
@@ -54,8 +55,9 @@ class KeyValidatorTest extends \PHPUnit_Framework_TestCase
      * @expectedException InvalidArgumentException
      * @dataProvider providerNotValidKeyNames
      */
-    public function testNegativeValidateKey($key)
+    public function testNegativeValidateKey($key): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->pool->getItem($key);
     }
 
@@ -64,7 +66,7 @@ class KeyValidatorTest extends \PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public function providerNotValidKeyNames()
+    public function providerNotValidKeyNames(): array
     {
         return [
             [null],
